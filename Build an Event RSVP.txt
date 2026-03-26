@@ -1,0 +1,63 @@
+const { useState } = React;
+
+export function EventRSVPForm() {
+
+
+const [nameInput, setNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [numberInput, setNumberInput] = useState("");
+  const [dietaryInput, setDietaryInput] = useState("");
+  const [additionalInput, setAdditionalInput] = useState(false);
+  const [result, setResult] = useState(false);
+  const [emailState, setEmailState] = useState(""); // Track email validation state
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = emailRegex.test(emailInput);
+    setEmailState(isValidEmail ? "valid" : "invalid");
+    setResult(true);
+  }
+  
+  return (
+    <div className="rsvp-form">
+      <h1>Event RSVP</h1>
+      <form onSubmit={handleSubmit}>
+
+        <label htmlFor="nameInput" >Name 
+          <input type="text" value={nameInput} id="nameInput" name="nameInput" onChange={e => setNameInput(e.target.value)} required/>
+        </label><br></br>
+
+        <label htmlFor="emailInput" >Email 
+          <input type="email" id="emailInput" name="emailInput" value={emailInput} onChange={e => setEmailInput(e.target.value)} required/>
+        </label><br></br>
+
+        <label htmlFor="numberInput" >Number of attendees 
+          <input type="number" min="1" id="numberInput" name="numberInput" value={numberInput} onChange={e => setNumberInput(e.target.value)} required/>
+        </label><br></br>
+
+        <label htmlFor="dietaryInput" >Dietary Preferences 
+          <input type="text" id="dietaryInput" name="dietaryInput" value={dietaryInput} onChange={e => setDietaryInput(e.target.value)} />
+        </label><br></br>
+
+        <label htmlFor="additionalInput" >Additional guests? 
+          <input type="checkbox" id="additionalInput" name="additionalInput" checked={additionalInput} onChange={e => setAdditionalInput(e.target.checked)} />
+        </label><br></br>
+
+        <button type="submit">Submit</button>
+      </form>
+      {result && <div className="rsvp-form result">
+        <p>RSVP Sent!</p>
+        <p>Name: {nameInput}</p>
+        <p>Email: {emailInput}</p>
+        <p className={`email-state email-state-${emailState}`}>Email Status: <strong>{emailState === "valid" ? "✓ Valid" : "✗ Invalid"}</strong></p>
+        <p>Number of attendees: {numberInput}</p>
+        <p>Dietary Preferences: {dietaryInput}</p>
+        <p>Additional guests?: {additionalInput ? "Yes" : "No"}</p>
+      </div>}
+    </div>
+  )  
+
+};
+  
